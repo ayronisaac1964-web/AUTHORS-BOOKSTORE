@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Orders — Admin — The Author's Bookshelf</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="stylesheet" href="../styles/main.css" />
+  <link rel="stylesheet" href="../styles/admin.css" />
+</head>
+<body class="admin-body">
+  <div id="admin-nav"></div>
+
+  <main class="admin-main">
+    <div class="admin-header-row">
+      <h1>Orders</h1>
+      <button type="button" class="btn btn-secondary" data-export-orders>Export CSV</button>
+    </div>
+
+    <div class="admin-filter-bar">
+      <div class="admin-filter-field">
+        <label for="of-status">Status</label>
+        <select id="of-status">
+          <option value="">All</option>
+          <option value="PENDING">Pending</option>
+          <option value="PAID">Paid</option>
+          <option value="FAILED">Failed</option>
+        </select>
+      </div>
+      <div class="admin-filter-field">
+        <label for="of-from">From</label>
+        <input type="date" id="of-from" />
+      </div>
+      <div class="admin-filter-field">
+        <label for="of-to">To</label>
+        <input type="date" id="of-to" />
+      </div>
+      <div class="admin-filter-field">
+        <label for="of-sort">Sort</label>
+        <select id="of-sort">
+          <option value="newest">Newest first</option>
+          <option value="oldest">Oldest first</option>
+          <option value="amount_desc">Amount: high to low</option>
+          <option value="amount_asc">Amount: low to high</option>
+        </select>
+      </div>
+      <button type="button" class="admin-btn-sm" data-apply-filters>Apply</button>
+      <button type="button" class="admin-btn-sm" data-clear-filters>Clear</button>
+    </div>
+
+    <div id="admin-orders-mount">
+      <p class="state-msg">Loading orders…</p>
+    </div>
+  </main>
+
+  <script src="../js/config.js"></script>
+  <script src="../js/currency.js"></script>
+  <script src="../js/adminApi.js"></script>
+  <script src="../js/admin-common.js"></script>
+  <script src="../js/admin-orders-page.js"></script>
+  <script>
+    (async function init() {
+      const me = await AdminCommon.requireAdminAuth();
+      if (!me) return;
+      AdminCommon.renderAdminNav("orders", me.email);
+      initAdminOrdersPage();
+    })();
+  </script>
+</body>
+</html>

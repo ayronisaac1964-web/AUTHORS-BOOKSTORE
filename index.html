@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>The Author's Bookshelf</title>
+  <meta name="description" content="Stories worth staying up for — explore the books and get a free chapter." />
+  <link rel="stylesheet" href="styles/main.css" />
+  <link rel="stylesheet" href="styles/pages.css" />
+</head>
+<body>
+  <div id="site-header"></div>
+
+  <main>
+    <section class="hero">
+      <div class="container">
+        <span class="eyebrow">The Author's Bookshelf</span>
+        <hr class="rule" style="margin-left:auto;margin-right:auto;" />
+        <h1 class="hero__headline">Stories that stay with you long after the last page.</h1>
+        <p class="hero__mission">
+          [Copy placeholder — mission paragraph] Every book here started as a question I
+          couldn't let go of. My hope is that they find you at the right moment, and that
+          you finish them a little more understood than when you began.
+        </p>
+        <div class="hero__ctas">
+          <a href="books.html" class="btn btn-primary">Explore the Books</a>
+          <a href="books.html" class="btn btn-secondary">Get a Free Chapter</a>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="about-trust">
+      <div class="container">
+        <div class="trust">
+          <div class="trust__portrait" aria-hidden="true">Photo</div>
+          <div class="trust__body">
+            <span class="eyebrow">About the Author</span>
+            <h2>Written by someone who's lived it</h2>
+            <p>
+              [Copy placeholder — author bio excerpt] I've spent the last decade writing
+              about the things people usually keep to themselves. Readers tell me my books
+              feel like a conversation with someone who already knows — that's exactly what
+              I set out to write.
+            </p>
+            <a href="about.html" class="btn btn-secondary">Read the full story</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <div id="testimonials"></div>
+
+    <section class="section section--tight">
+      <div class="container" style="text-align:center;">
+        <h2>Ready to start reading?</h2>
+        <p class="hero__mission">Browse the full collection and find your next favorite.</p>
+        <a href="books.html" class="btn btn-primary">Explore the Books</a>
+      </div>
+    </section>
+  </main>
+
+  <div id="site-footer"></div>
+  <div id="lead-gate-modal"></div>
+
+  <script src="js/config.js"></script>
+  <script src="js/currency.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/api.js"></script>
+  <script src="js/leadGate.js"></script>
+  <script src="js/header.js"></script>
+  <script src="js/footer.js"></script>
+  <script src="js/testimonials.js"></script>
+  <script src="js/leadGateModal.js"></script>
+  <script>
+    renderHeader();
+    renderFooter();
+    renderTestimonials();
+    renderLeadGateModal();
+
+    // "Get a Free Chapter" CTA on the homepage has no single book in
+    // context, so it sends the visitor to the books page to pick one
+    // rather than opening the gate here without a bookId.
+  </script>
+</body>
+</html>

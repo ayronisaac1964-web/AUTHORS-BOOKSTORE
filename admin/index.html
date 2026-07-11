@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard — The Author's Bookshelf</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="stylesheet" href="../styles/main.css" />
+  <link rel="stylesheet" href="../styles/admin.css" />
+</head>
+<body class="admin-body">
+  <div id="admin-nav"></div>
+
+  <main class="admin-main">
+    <div class="admin-header-row">
+      <h1>Dashboard</h1>
+    </div>
+
+    <p class="state-msg" data-dashboard-status>Loading overview…</p>
+    <div class="admin-card-grid" data-dashboard-cards style="display:none;"></div>
+  </main>
+
+  <script src="../js/config.js"></script>
+  <script src="../js/adminApi.js"></script>
+  <script src="../js/admin-common.js"></script>
+  <script>
+    (async function init() {
+      const me = await AdminCommon.requireAdminAuth();
+      if (!me) return;
+      AdminCommon.renderAdminNav("dashboard", me.email);
+
+      const statusEl = document.querySelector("[data-dashboard-status]");
+      const cardsEl = document.querySelector("[data-dashboard-cards]");
+
+      try {
+        const [books, orders, leads] = await Promise.all([
+          window.AdminApi.fetchAdminBooks(),
+          window.AdminApi.fetchAdminOrders({}),
+          window.AdminApi.fetchAdminLeads({}),
+        ]);
+
+        const activeBooks = books.filter((b) => b.isActive).length;
+        const paidOrders = orders.filter((o) => o.status === "PAID").length;
+
+        cardsEl.innerHTML = `
+          <a href="books.html" class="admin-card">
+            <span class="admin-card__label">Books</span>
+            <div class="admin-card__count">${books.length}</div>
+            <span class="admin-card__label">${activeBooks} active</span>
+          </a>
+          <a href="orders.html" class="admin-card">
+            <span class="admin-card__label">Orders</span>
+            <div class="admin-card__count">${orders.length}</div>
+            <span class="admin-card__label">${paidOrders} paid</span>
+          </a>
+          <a href="leads.html" class="admin-card">
+            <span class="admin-card__label">Leads</span>
+            <div class="admin-card__count">${leads.length}</div>
+            <span class="admin-card__label">View all &rarr;</span>
+          </a>
+          <a href="book-new.html" class="admin-card">
+            <span class="admin-card__label">Quick Action</span>
+            <div class="admin-card__count">+</div>
+            <span class="admin-card__label">Add a new book</span>
+          </a>
+        `;
+        statusEl.style.display = "none";
+        cardsEl.style.display = "grid";
+      } catch (err) {
+        statusEl.textContent = "Couldn't load the overview. Is the backend running?";
+        statusEl.classList.add("state-msg--error");
+      }
+    })();
+  </script>
+</body>
+</html>

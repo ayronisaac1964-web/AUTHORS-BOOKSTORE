@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Login — The Author's Bookshelf</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="stylesheet" href="styles/main.css" />
+  <link rel="stylesheet" href="styles/admin.css" />
+</head>
+<body class="admin-body">
+  <div class="admin-login-wrap">
+    <div class="admin-login-card">
+      <h1>Admin Login</h1>
+      <p class="admin-login-card__subhead">Sign in to manage books, orders, and leads.</p>
+
+      <form data-login-form novalidate>
+        <div class="form-field">
+          <label for="admin-email">Email</label>
+          <input type="email" id="admin-email" name="email" autocomplete="username" required />
+        </div>
+        <div class="form-field">
+          <label for="admin-password">Password</label>
+          <input type="password" id="admin-password" name="password" autocomplete="current-password" required />
+        </div>
+        <p class="form-error" data-login-error></p>
+        <button type="submit" class="btn btn-primary" data-login-submit>Log In</button>
+      </form>
+    </div>
+  </div>
+
+  <script src="js/config.js"></script>
+  <script src="js/adminApi.js"></script>
+  <script src="js/admin-common.js"></script>
+  <script>
+    // If there's already a valid admin session, skip straight to the
+    // dashboard instead of showing the form.
+    (async function redirectIfLoggedIn() {
+      try {
+        const me = await window.AdminApi.fetchMe();
+        if (me) window.location.href = "admin/index.html";
+      } catch (err) {
+        // no session — stay on the login form
+      }
+    })();
+
+    const form = document.querySelector("[data-login-form]");
+    const errorEl = document.querySelector("[data-login-error]");
+    const submitBtn = document.querySelector("[data-login-submit]");
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      errorEl.textContent = "";
+      const email = document.querySelector("#admin-email").value.trim();
+      const password = document.querySelector("#admin-password").value;
+
+      submitBtn.disabled = true;
+      submitBtn.textContent = "Logging in…";
+      try {
+        await window.AdminApi.login(email, password);
+        window.location.href = "admin/index.html";
+      } catch (err) {
+        errorEl.textContent = err.message || "Login failed. Check your credentials and try again.";
+        submitBtn.disabled = false;
+        submitBtn.textContent = "Log In";
+      }
+    });
+  </script>
+</body>
+</html>

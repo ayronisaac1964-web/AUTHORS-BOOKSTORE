@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Leads — Admin — The Author's Bookshelf</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="stylesheet" href="../styles/main.css" />
+  <link rel="stylesheet" href="../styles/admin.css" />
+</head>
+<body class="admin-body">
+  <div id="admin-nav"></div>
+
+  <main class="admin-main">
+    <div class="admin-header-row">
+      <h1>Leads</h1>
+      <button type="button" class="btn btn-secondary" data-export-leads>Export CSV</button>
+    </div>
+
+    <div class="admin-filter-bar">
+      <div class="admin-filter-field">
+        <label for="lf-search">Search</label>
+        <input type="text" id="lf-search" placeholder="Name or email" />
+      </div>
+      <div class="admin-filter-field">
+        <label for="lf-from">From</label>
+        <input type="date" id="lf-from" />
+      </div>
+      <div class="admin-filter-field">
+        <label for="lf-to">To</label>
+        <input type="date" id="lf-to" />
+      </div>
+      <button type="button" class="admin-btn-sm" data-apply-filters>Apply</button>
+      <button type="button" class="admin-btn-sm" data-clear-filters>Clear</button>
+    </div>
+
+    <div id="admin-leads-mount">
+      <p class="state-msg">Loading leads…</p>
+    </div>
+  </main>
+
+  <script src="../js/config.js"></script>
+  <script src="../js/adminApi.js"></script>
+  <script src="../js/admin-common.js"></script>
+  <script src="../js/admin-leads-page.js"></script>
+  <script>
+    (async function init() {
+      const me = await AdminCommon.requireAdminAuth();
+      if (!me) return;
+      AdminCommon.renderAdminNav("leads", me.email);
+      initAdminLeadsPage();
+    })();
+  </script>
+</body>
+</html>

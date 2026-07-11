@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Add Book — Admin — The Author's Bookshelf</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <link rel="stylesheet" href="../styles/main.css" />
+  <link rel="stylesheet" href="../styles/admin.css" />
+</head>
+<body class="admin-body">
+  <div id="admin-nav"></div>
+
+  <main class="admin-main">
+    <div class="admin-header-row">
+      <h1>Add New Book</h1>
+      <a href="books.html" class="btn btn-secondary">Back to Books</a>
+    </div>
+
+    <div id="admin-book-form-mount"></div>
+  </main>
+
+  <script src="../js/config.js"></script>
+  <script src="../js/adminApi.js"></script>
+  <script src="../js/admin-common.js"></script>
+  <script src="../js/admin-book-form.js"></script>
+  <script>
+    (async function init() {
+      const me = await AdminCommon.requireAdminAuth();
+      if (!me) return;
+      AdminCommon.renderAdminNav("books", me.email);
+      initAdminBookForm({ mode: "create" });
+    })();
+  </script>
+</body>
+</html>
